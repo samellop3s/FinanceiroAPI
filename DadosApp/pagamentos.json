@@ -1,0 +1,52 @@
+[
+  {
+    "RazaoSocialPagador": "GALAXIA IMP E EXP",
+    "CnpjPagador": "48849146000132",
+    "Fornecedor": "NOVA VENUS",
+    "CnpjFornecedor": "48849146000132",
+    "ValorTotal": 1500,
+    "DataVencimento": "2026-07-28T00:00:00Z",
+    "Observacoes": "TESTE",
+    "CaminhoArquivoAnexo": "C:\\Users\\samue\\source\\repos\\FinanceiroApi\\DadosApp\\Anexos\\Vol1_Cap3_Transformer.pdf"
+  },
+  {
+    "RazaoSocialPagador": "Galaxia imp e exp ltda",
+    "CnpjPagador": "48849146000132",
+    "Fornecedor": "nova venus ltda",
+    "CnpjFornecedor": "48849146000132",
+    "ValorTotal": 1500.00,
+    "DataVencimento": "2026-07-29T00:00:00",
+    "Observacoes": "teste de API",
+    "CaminhoArquivoAnexo": ""
+  },
+  {
+    "RazaoSocialPagador": "Galaxia imp e exp ltda",
+    "CnpjPagador": "48849146000132",
+    "Fornecedor": "nova venus ltda",
+    "CnpjFornecedor": "48849146000132",
+    "ValorTotal": 1500.00,
+    "DataVencimento": "2026-07-29T00:00:00",
+    "Observacoes": "teste",
+    "CaminhoArquivoAnexo": ""
+  },
+  {
+    "RazaoSocialPagador": "Galaxia imp e exp ltda",
+    "CnpjPagador": "48849146000132",
+    "Fornecedor": "nova venus ltda",
+    "CnpjFornecedor": "48849146000132",
+    "ValorTotal": 1500.00,
+    "DataVencimento": "2026-07-30T00:00:00",
+    "Observacoes": "teste de retorno do anexo",
+    "CaminhoArquivoAnexo": "C:\\Users\\samue\\source\\repos\\FinanceiroApi\\DadosApp\\Anexos\\Samuel_CV (3) (1).docx"
+  },
+  {
+    "RazaoSocialPagador": "Galaxia imp e exp ltda",
+    "CnpjPagador": "48849146000132",
+    "Fornecedor": "nova venus ltda",
+    "CnpjFornecedor": "48849146000132",
+    "ValorTotal": 1500.00,
+    "DataVencimento": "2026-07-30T00:00:00",
+    "Observacoes": "teste de anexo em link",
+    "CaminhoArquivoAnexo": "C:\\Users\\samue\\source\\repos\\FinanceiroApi\\DadosApp\\Anexos\\Samuel_CV (3) (1)_1.docx"
+  }
+]
