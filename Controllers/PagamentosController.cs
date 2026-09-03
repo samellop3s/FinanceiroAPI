@@ -33,6 +33,18 @@ namespace FinanceiroApi.Controllers
         {
             return _repositorio.CarregarTodos();
         }
+
+        [HttpGet("{id}")]
+        public IActionResult ObterPagamento(int id)
+        {
+            var pagamento = _repositorio.ObterPorId(id);
+
+            if (pagamento == null)
+                return NotFound();
+
+            return Ok(pagamento);
+        }
+
         [HttpPost]
         public IActionResult Salvar([FromForm] PagamentoRequest request)
         {
@@ -77,6 +89,80 @@ namespace FinanceiroApi.Controllers
 
             return Ok(new { mensagem = "Pagamento cadastrado com sucesso!" });
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Atualizar(int id, [FromForm] PagamentoRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.RazaoSocialPagador))
+                return BadRequest("Informe a razão social do pagador.");
+            if (string.IsNullOrWhiteSpace(request.Fornecedor))
+                return BadRequest("Informe o nome do fornecedor.");
+            if (!CnpjHelper.IsValid(request.CnpjPagador))
+                return BadRequest("CNPJ do pagador invalido.");
+            if (!CnpjHelper.IsValid(request.CnpjFornecedor))
+                return BadRequest("CNPJ do fornecedor invalido.");
+
+            if (!decimal.TryParse(
+                request.ValorTotal,
+                NumberStyles.Number,
+                CultureInfo.GetCultureInfo("pt-BR"),
+                out decimal valorTotal) || valorTotal <= 0)
+            {
+                return BadRequest("Informe um valor total válido, maior que zero");
+            }
+
+            var pagamento = _repositorio.ObterPorId(id);
+
+            if (pagamento == null)
+                return NotFound();
+
+            string caminhoAnexoAntigo = pagamento.CaminhoArquivoAnexo;
+
+            if (request.Anexo != null && request.Anexo.Length > 0)
+            {
+                using var streamArquivo = request.Anexo.OpenReadStream();
+                pagamento.CaminhoArquivoAnexo = _repositorio.CopiarAnexo(streamArquivo, request.Anexo.FileName);
+            }
+
+            pagamento.RazaoSocialPagador = request.RazaoSocialPagador.Trim();
+            pagamento.CnpjPagador = CnpjHelper.SomenteNumeros(request.CnpjPagador);
+            pagamento.Fornecedor = request.Fornecedor.Trim();
+            pagamento.CnpjFornecedor = CnpjHelper.SomenteNumeros(request.CnpjFornecedor);
+            pagamento.ValorTotal = valorTotal;
+            pagamento.DataVencimento = DateTime.SpecifyKind(request.DataVencimento.Date, DateTimeKind.Utc);
+            pagamento.Observacoes = request.Observacoes.Trim();
+
+            _repositorio.Atualizar(pagamento);
+
+            if (request.Anexo != null && request.Anexo.Length > 0 &&
+                !string.IsNullOrWhiteSpace(caminhoAnexoAntigo) &&
+                System.IO.File.Exists(caminhoAnexoAntigo))
+            {
+                try
+                {
+                    System.IO.File.Delete(caminhoAnexoAntigo);
+                }
+                catch
+                {
+                }
+            }
+
+            return Ok(new { mensagem = "Pagamento atualizado com sucesso!" });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult ExcluirPagamento(int id)
+        {
+            var pagamento = _repositorio.ObterPorId(id);
+
+            if (pagamento == null)
+                return NotFound();
+
+            _repositorio.Excluir(id);
+
+            return Ok(new { mensagem = "Pagamento excluído com sucesso!" });
+        }
+
         [HttpGet("anexo/{nomeArquivo}")]
         public IActionResult ObterAnexo(string nomeArquivo)
         {

@@ -61,6 +61,40 @@ namespace FinanceiroApi.Data
             _contexto.SaveChanges();
         }
 
+        public PagamentoFinanceiro? ObterPorId(int id)
+        {
+            return _contexto.Pagamentos.FirstOrDefault(p => p.Id == id);
+        }
+
+        public void Atualizar(PagamentoFinanceiro pagamento)
+        {
+            _contexto.Pagamentos.Update(pagamento);
+            _contexto.SaveChanges();
+        }
+
+        public void Excluir(int id)
+        {
+            var pagamento = _contexto.Pagamentos.FirstOrDefault(p => p.Id == id);
+
+            if (pagamento == null)
+                return;
+
+            _contexto.Pagamentos.Remove(pagamento);
+            _contexto.SaveChanges();
+
+            if (!string.IsNullOrWhiteSpace(pagamento.CaminhoArquivoAnexo))
+            {
+                try
+                {
+                    if (File.Exists(pagamento.CaminhoArquivoAnexo))
+                        File.Delete(pagamento.CaminhoArquivoAnexo);
+                }
+                catch
+                {
+                }
+            }
+        }
+
         public List<PagamentoFinanceiro> CarregarTodos() //fazer conexão do banco de dados para salvar pagamentos 
         {
             return _contexto.Pagamentos
