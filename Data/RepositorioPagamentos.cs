@@ -95,7 +95,7 @@ namespace FinanceiroApi.Data
             }
         }
 
-        public List<PagamentoFinanceiro> CarregarTodos() //fazer conexão do banco de dados para salvar pagamentos 
+        public List<PagamentoFinanceiro> CarregarTodos()
         {
             return _contexto.Pagamentos
                 .OrderByDescending(p => p.DataCadastro)
