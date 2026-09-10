@@ -21,5 +21,6 @@ namespace FinanceiroApi.Data
         }
 
         public DbSet<PagamentoFinanceiro> Pagamentos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }
