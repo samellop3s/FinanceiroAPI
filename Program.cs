@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +42,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var chaveJwt = builder.Configuration["Jwt:JoseCarlosDeJesusLopesZeliGomesFerreiraLopesSamuelFerreiraLopesRafaelFerreiraLopes"];
+var chaveBytes = Encoding.UTF8.GetBytes(chaveJwt!);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Emissor"],
+            ValidAudience = builder.Configuration["Jwt:Audiencia"],
+            IssuerSigningKey = new SymmetricSecurityKey(chaveBytes)
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

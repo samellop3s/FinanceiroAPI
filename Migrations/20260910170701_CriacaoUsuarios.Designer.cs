@@ -3,6 +3,7 @@ using System;
 using FinanceiroApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceiroApi.Migrations
 {
     [DbContext(typeof(FinanceiroDbContext))]
-    partial class FinanceiroDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260910170701_CriacaoUsuarios")]
+    partial class CriacaoUsuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
