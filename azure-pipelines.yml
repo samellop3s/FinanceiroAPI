@@ -1,0 +1,39 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Restaurar dependências'
+  inputs:
+    command: 'restore'
+    projects: '**/FinanceiroApi.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Compilar projeto'
+  inputs:
+    command: 'build'
+    projects: '**/FinanceiroApi.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publicar projeto'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/FinanceiroApi.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
+
+- task: AzureWebApp@1
+  displayName: 'Publicar no Azure App Service'
+  inputs:
+    azureSubscription: 'Conexao-Azure-Financeiro'
+    appType: 'webAppLinux'
+    appName: 'financeiro-api-lopes'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
