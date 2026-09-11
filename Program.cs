@@ -59,7 +59,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(chaveBytes)
         };
     });
-
+//teste de pipeline
 
 builder.Services.AddAuthorization();
 
